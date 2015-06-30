@@ -29,8 +29,8 @@ integrator.o: integrator.c integrator.h hmc.h Makefile
 qed.o: qed.c fields.h lattice.h linalg.h hmc.h complex/complex.h Makefile rand/ranlxd.h
 	$(CC) -c $< -o $@
 
-qed: fields.o qed.o hmc.o lattice.o linalg.o measurements.o ranlxd.o gauss.o fermion.o integrator.o Makefile
-	$(CC) qed.o fields.o hmc.o lattice.o linalg.o measurements.o ranlxd.o gauss.o fermion.o integrator.o -o qed -lm
+qed: fields.o qed.o hmc.o lattice.o linalg.o  ranlxd.o gauss.o fermion.o integrator.o Makefile
+	$(CC) qed.o fields.o hmc.o lattice.o linalg.o ranlxd.o gauss.o fermion.o integrator.o -o qed -lm
 
 clean:
 	rm -f *.o qed test1 test2

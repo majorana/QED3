@@ -2,7 +2,7 @@
 #define _INTEGRATOR_H
 
 //This is the implementation of the Leapfrog integrator ... 
-void leapfrog(const double dtau);
+void integrator(const double dtau);
 
 void omelyan(const double dtau);
 

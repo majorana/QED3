@@ -31,7 +31,7 @@ double square_norm(complex double *S)
   	for (ix=0;ix<GRIDPOINTS;ix++)
   	{
     	s = (complex double *)S + ix;
-    	ds += creal(cconj(S[ix])*S[ix];
+    	ds += creal(cconj(S[ix]))*S[ix];
   	}
 
   	return ds;
@@ -184,7 +184,7 @@ double scalar_prod_r(complex double *S, complex double *R)
     r=(complex double *) R + ix;
     
     //ds+=conj((*s).s1)*(*r).s1+conj((*s).s2)*(*r).s2;
-    ds+=creal(cconj(S[ix])*R[ix]
+    ds+=creal(cconj(S[ix]))*R[ix];
   }
 
   return(ds);

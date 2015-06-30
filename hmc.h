@@ -18,6 +18,7 @@ extern double ham, ham_old;
 
 extern int R;  // Counter of all accepted configurations
 extern int g_cgiterations, g_cgiterations1, g_cgiterations2;
+extern int hmc_iter;
 
 int  update(); //Basic HMC update step
 int  accept(const double exphdiff); //Accept or reject the trajectory depending on exphdiff

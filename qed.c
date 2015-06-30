@@ -6,9 +6,11 @@
 #include "lattice.h"
 #include "hmc.h"
 #include "fields.h"
-#include "measurements.h"
 
 /* global variables */
+double g_mu = 1.0;
+double g_t = 1.0;
+
 int g_thermalize   = 100;   //Number of MC updates for thermalization
 int g_measurements = 200;    //Number of measurements (statistically independent configurations)
 int g_intermediate =  2;    //Number of MC updates between the measurements

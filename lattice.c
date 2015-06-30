@@ -23,16 +23,16 @@ int init_lattice(const int Nx, const int Ny, const int Nt) {
   	tp = (int *)malloc(N*sizeof(int));
   	tm = (int *)malloc(N*sizeof(int));
 
-  	for(it = 0; ix < Nt; it++) {
+  	for(it = 0; it < Nt; it++) {
 	  	for(ix = 0; ix < Nx; ix++) {
 		  	for(iy = 0; iy < Ny; iy++) {
 			  	s = it*Nx*Ny + ix*Ny + iy;
-			  	xp[s] = it*Nx*Ny + mod(ix+1,Nx)*Ny + iy
-				xm[s] = it*Nx*Ny + mod(ix-1,Nx)*Ny + iy
-				yp[s] = it*Nx*Ny + ix*Ny + mod(iy+1, Ny)
-				ym[s] = it*Nx*Ny + ix*Ny + mod(iy-1, Ny)
-				tp[s] = mod(it+1, Nt)*Nx*Ny + ix*Ny + iy;
-				tm[s] = mod(it-1, Nt)*Nx*Ny + ix*Ny + iy;
+			  	xp[s] = it*Nx*Ny + ((ix+1)%Nx)*Ny + iy;
+				xm[s] = it*Nx*Ny + ((ix-1)%Nx)*Ny + iy;
+				yp[s] = it*Nx*Ny + ix*Ny + ((iy+1)%Ny);
+				ym[s] = it*Nx*Ny + ix*Ny + ((iy-1)%Ny);
+				tp[s] = ((it+1)%Nt)*Nx*Ny + ix*Ny + iy;
+				tm[s] = ((it-1)%Nt)*Nx*Ny + ix*Ny + iy;
 		  }
 	  }
   }

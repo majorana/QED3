@@ -22,7 +22,8 @@ void fermion(complex double *out, complex double *in)
 
 void fermion_fp(complex double *out, complex double *temp, complex double *in)
 {
-	return fermion(out, in);
+	fermion(out, in);
+	return;
 }
 
 void fermion_herm(complex double *out, complex double *in) 
@@ -50,7 +51,7 @@ void fermion_DGx(complex double *out, complex double *in, int j)
 	return;
 }
 
-void fermion_DGy(complex double *out, complex double *in)
+void fermion_DGy(complex double *out, complex double *in, int j)
 {
 	set_zero(out);
 	out[j] = -I*g_t*Uy[j]*in[yp[j]];
@@ -58,7 +59,7 @@ void fermion_DGy(complex double *out, complex double *in)
 	return;
 }
 
-void fermion_DGt(complex double *out, complex double *in)
+void fermion_DGt(complex double *out, complex double *in, int j)
 {
 	set_zero(out);
 	out[j] = I*Ut[j]*in[tp[j]];

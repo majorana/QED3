@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "hmc.h"
-#include "leapfrog.h"
-#include "dirac.h"
+#include "integrator.h"
+#include "fermion.h"
 #include "fields.h"
 
 /*  leap frog integrator */
@@ -63,7 +63,7 @@ void update_gauge(const double dtau) {
   for(i = 0; i < GRIDPOINTS; i++) {
     Ax[i] = Ax[i] + dtau*gpx[i];
     Ay[i] = Ay[i] + dtau*gpy[i];
-	At[i] = At[i] + dtau*gpt[i]
+	At[i] = At[i] + dtau*gpt[i];
   }
   calculatelinkvars();
   return;

@@ -12,6 +12,7 @@
 #include "hmc.h"
 
 int R;
+int hmc_iter;
 int g_cgiterations;
 int g_cgiterations1;
 int g_cgiterations2;
@@ -19,6 +20,7 @@ double ham, ham_old;
 
 double hamiltonian()
 {
+	int i;
 	ham = 0;
  	s_g = 0;
  	for (i=0; i<GRIDPOINTS; i++)
@@ -27,13 +29,13 @@ double hamiltonian()
   		ham += 0.5*(gpx[i]*gpx[i] + gpy[i]*gpy[i] + gpt[i]*gpt[i]);
  	};
  	ham += s_g;
-	return(ham)
+	return(ham);
 }
 
 int update() //Basic HMC update step
 {
  	int i, acc;
- 	double exphdiff;
+ 	double squnrm, exphdiff;
  
  	ham_old = 0.0;
  	for(i=0; i<GRIDPOINTS; i++)
@@ -107,8 +109,9 @@ int accept(const double exphdiff)
       // get the old values for phi, cause the configuration was not accepted
     	for (i=0; i<GRIDPOINTS; i++)
 		{
-	  		gauge1[i]=gauge1_old[i];
-	  		gauge2[i]=gauge2_old[i];
+			Ax[i] = Ax_old[i];
+			Ay[i] = Ay_old[i];
+			At[i] = At_old[i];
 		};
       	calculatelinkvars();
       	s_g = s_g_old;

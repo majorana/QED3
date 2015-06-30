@@ -19,6 +19,6 @@ extern int * tp;
 extern int * tm;
 
 
-int  init_lattice(const int Ny, const int Ny, const int Nt);      //This procedure initializes the above arrays
+extern int  init_lattice(const int Nx, const int Ny, const int Nt);      //This procedure initializes the above arrays
 
 #endif

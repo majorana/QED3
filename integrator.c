@@ -71,9 +71,9 @@ void update_momenta(const double dtau)
   	int i;
   	g_cgiterations1 += cg(g_eta, g_fermion, ITER_MAX, DELTACG, &fermion_sqr);
   	for(i = 0; i < GRIDPOINTS; i++) {
-		gpt[i] = gpt[i] - dtau*(DS_Gt(i) - fermion_forcet(i));
-    	gpx[i] = gpx[i] - dtau*(DS_Gx(i) - fermion_forcex(i));
-    	gpy[i] = gpy[i] - dtau*(DS_Gy(i) - fermion_forcey(i));
+		gpt[i] = gpt[i] - dtau*(DS_Gt(i) + fermion_forcet(i));
+    	gpx[i] = gpx[i] - dtau*(DS_Gx(i) + fermion_forcex(i));
+    	gpy[i] = gpy[i] - dtau*(DS_Gy(i) + fermion_forcey(i));
   	}
   	return;
 }

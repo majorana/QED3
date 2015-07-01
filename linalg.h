@@ -4,7 +4,7 @@
 #include "complex/complex.h"
 
 //If this is #defined, CG will print the norm of each residue
-#define MONITOR_CG_PROGRESS
+#undef MONITOR_CG_PROGRESS
 
 /***********************************************************/
 /**** Implementation of linear algebra on complex double fields ****/
@@ -29,6 +29,7 @@ void mul_r(complex double *R, double c, complex double *S);                   //
 void mul_c(complex double *R, complex double c, complex double *S);           // R = c S, c is complex
 double square_norm(complex double *P);                                // (P, P*)
 void add(complex double *Q, complex double *R, complex double *S);                    // Q = R + S
+void print_vector(complex double *v);
 
 //Conjugate gradient method...
 int cg(complex double *P, complex double *Q, int max_iter, double eps_sq, matrix_mult f);

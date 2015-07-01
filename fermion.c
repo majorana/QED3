@@ -63,7 +63,7 @@ void fermion_DGy(complex double *out, complex double *in, int j)
 void fermion_DGt(complex double *out, complex double *in, int j)
 {
 	set_zero(out);
-	out[j] = I*Ut[j]*in[tp[j]];
+	out[j] = I*exp(-g_mu)*Ut[j]*in[tp[j]];
 	return;
 }
 

@@ -141,6 +141,15 @@ double scalar_prod_r(complex double *S, complex double *R)
   return(ds);
 }
 
+void print_vector(complex double *v)
+{
+	int i;
+	for(i = 0; i<GRIDPOINTS; i++) {
+		printf("(%f,%f),", creal(v[i]), cimag(v[i]));
+	}
+	printf("\n\n");
+}
+
 /************ Conjugate gradient ****************/
 /***    Solves the equation f*P = Q           ***/
 /************************************************/
@@ -161,7 +170,6 @@ int cg(complex double *P, complex double *Q, int max_iter, double eps_sq, matrix
  	assign(r, Q); /* r = Q - f*x, x=0 */
  	assign(p, r);
  	normsq = square_norm(r);
- 	printf("%f\n", normsq);
   
  	/* main loop */
 #ifdef MONITOR_CG_PROGRESS

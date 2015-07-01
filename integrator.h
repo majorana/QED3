@@ -12,4 +12,8 @@ void update_momenta_gauge(const double dtau);
 
 void update_gauge(const double dtau);
 
+double fermion_forcet(const int i);
+double fermion_forcex(const int i);
+double fermion_forcey(const int i);
+
 #endif

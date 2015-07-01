@@ -8,7 +8,6 @@
 void add(complex double *Q, complex double *R, complex double *S)
 {
   	int ix;
-  
   	for (ix=0;ix<GRIDPOINTS;ix++)
   	{
     	Q[ix] = R[ix] + S[ix];
@@ -33,7 +32,6 @@ double square_norm(complex double *S)
 void assign(complex double *R, complex double *S)
 {
   	int ix;
-  
   	for (ix=0;ix<GRIDPOINTS;ix++){
     	R[ix] = S[ix];
   }
@@ -42,7 +40,6 @@ void assign(complex double *R, complex double *S)
 void assign_add_mul(complex double *P, complex double *Q, complex double c)
 {
   	int ix;
-  
   	for (ix=0;ix<GRIDPOINTS;ix++){
 		P[ix] = P[ix] + c*Q[ix];
   	  	//(*r).s1 = (*r).s1 + c*(*s).s1;
@@ -63,12 +60,11 @@ void assign_add_mul_r(complex double *P, complex double *Q, double c)
 }
 
 void assign_diff_mul(complex double *R, complex double *S, complex double c){
-  int ix;
-
-  for (ix=0;ix<GRIDPOINTS;ix++)
-  {
-    R[ix]=R[ix]-c*S[ix];
-  }
+  	int ix;
+  	for (ix=0;ix<GRIDPOINTS;ix++)
+  	{
+    	R[ix]=R[ix]-c*S[ix];
+  	}
 }
 
 void assign_mul_add_r(complex double *R, complex double *S, double c)
@@ -87,7 +83,6 @@ void assign_mul_add_r(complex double *R, complex double *S, double c)
 void diff(complex double *Q, complex double *R, complex double *S)
 {
   int ix;
-  
   for (ix=0;ix<GRIDPOINTS;ix++){
 	Q[ix] = R[ix]-S[ix];
     //(*q).s2=(*r).s2-(*s).s2;
@@ -107,7 +102,6 @@ void mul_r(complex double *R, double c, complex double *S)
 void mul_c(complex double *R, complex double c, complex double *S)
 {
   int ix;
-
   for (ix=0;ix<GRIDPOINTS;ix++){
     R[ix]=c*S[ix]; 
     //(*r).s2=c*(*s).s2;

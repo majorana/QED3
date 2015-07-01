@@ -21,7 +21,7 @@ double ham, ham_old;
 void test_fermion_force(int n) {
 	int i, j;
 	double squnrm;
-	complex double x;
+	complex double dA;
 	complex double basis[GRIDPOINTS];
 	complex double out[GRIDPOINTS];
 	complex double temp[GRIDPOINTS];
@@ -68,16 +68,14 @@ void test_fermion_force(int n) {
   	fermion(g_fermion, g_R); //g_fermion the pseudofermion field, i.e. phi = M R
   	ham_old = squnrm;
 	
-	//for(i=0; i<GRIDPOINTS; i++)
- 	//{
-  	//	g_fermion[i] = i+1; 
- 	//};
-
+	dA = 0.01;
+	At[n] += dA;
+	calculatelinkvars();
 	g_cgiterations1 += cg(g_eta, g_fermion, ITER_MAX, DELTACG, &fermion_sqr);
 
 	ham += scalar_prod_r(g_fermion, g_eta);
 
-	printf("%f, %f\n", ham_old, ham);
+	printf("Fermion force: %f\n", (ham-ham_old)/dA);
 
 	return;
 }

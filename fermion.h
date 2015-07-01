@@ -2,7 +2,8 @@
 #define _FERMION_H
 
 /**********************************************************************************************/
-/*** Implementation of the fermion single-particle operator, its square and derivatives over the gauge fields ***/
+/*** Implementation of the fermion single-particle operator, 
+ * its square and derivatives over the gauge fields ***/
 /**********************************************************************************************/
 
 #include "linalg.h"

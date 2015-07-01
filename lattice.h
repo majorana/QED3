@@ -5,9 +5,9 @@
 /***** This unit defines lattice geometry  *****/
 /***********************************************/    
 
-#define Lx (6)                                       //Lattice size in direction 1
-#define Ly (6)                                      //Lattice size in direction 2
-#define Lt (6)
+#define Lx (4)                                       
+#define Ly (4)                                      
+#define Lt (4)
 #define GRIDPOINTS (Lx*Ly*Lt)                           //Total number of lattice sites
 
 

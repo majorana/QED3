@@ -8,7 +8,7 @@
 #include "fields.h"
 
 /* global variables */
-double g_mu = 0.0;
+double g_mu = 2.0;
 double g_t = 1.0;
 
 int g_thermalize   = 100;   //Number of MC updates for thermalization

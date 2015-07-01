@@ -14,7 +14,8 @@ void fermion(complex double *out, complex double *in)
 {
 	int i,j;
   	for(i=0; i<GRIDPOINTS; i++) {
-		out[i] = exp(-g_mu)*Ut[i]*in[tp[i]] - in[i] - g_t*(Ux[i]*in[xp[i]] + cconj(Ux[xm[i]])*in[xm[i]] + Uy[i]*in[yp[i]] + cconj(Uy[ym[i]])*in[ym[i]]);
+		out[i] = exp(-g_mu)*Ut[i]*in[tp[i]] - in[i] 
+			- g_t*(Ux[i]*in[xp[i]] + cconj(Ux[xm[i]])*in[xm[i]] + Uy[i]*in[yp[i]] + cconj(Uy[ym[i]])*in[ym[i]]);
 		//printf("%d,%f,%f\n", i, creal(out[i]),cimag(out[i]));
 	}
 	return;

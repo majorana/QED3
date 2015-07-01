@@ -26,7 +26,7 @@ void test_fermion_force(int n) {
 	complex double out[GRIDPOINTS];
 	complex double temp[GRIDPOINTS];
 	
-	printf("\n Fermion determinant:\n");
+	/* printf("\n Fermion determinant:\n");
 	set_zero(basis);
 	for(i = 0; i<GRIDPOINTS; i++) 
 	{
@@ -58,6 +58,7 @@ void test_fermion_force(int n) {
 		basis[i] = 0.0;
 	}
 	printf("\n");
+	*/
 
 	for(i=0; i<GRIDPOINTS; i++)
  	{

@@ -14,7 +14,6 @@ complex double g_eta[GRIDPOINTS];
 complex double g_R[GRIDPOINTS];       //g_X = (gamma_5 D)^{-2} g_fermion
 complex double g_temp1[GRIDPOINTS], g_temp2[GRIDPOINTS];
 
-//Here the names like gauge1, gauge2 etc. mean the first and the second component of the gauge field
 double At[GRIDPOINTS], Ax[GRIDPOINTS], Ay[GRIDPOINTS];         //Non-compact real-valued gauge fields
 double At_old[GRIDPOINTS], Ax_old[GRIDPOINTS], Ay_old[GRIDPOINTS]; //Old values of the gauge field
 complex double Ut[GRIDPOINTS], Ux[GRIDPOINTS], Uy[GRIDPOINTS];   //Compact lattice gauge fields: link = exp(I*gauge)
@@ -29,15 +28,33 @@ double S_G(int i)
 
 double DS_Gt(int i)
 {
-	return(0);
+	return beta0*(
+			sin(At[i]+Ax[tp[i]] - At[xp[i]] - Ax[i]) -
+			sin(At[xm[i]]+Ax[tp[xm[i]]] - At[i] - Ax[xm[i]]) +
+			sin(At[i] + Ay[tp[i]] - At[yp[i]] - Ay[i]) - 
+			sin(At[ym[i]]+Ay[tp[ym[i]]] - At[i] - Ay[ym[i]]) 
+			);
 }
 
 double DS_Gx(int i)
 {
+	return beta*(
+			sin(Ax[i]+Ay[xp[i]] - Ax[yp[i]] - Ay[i]) -
+			sin(Ax[xm[i]]+Ay[xp[ym[i]]] - Ax[i] - Ay[ym[i]]) 
+			) + beta0*(-sin(At[i] + Ax[tp[i]] - At[xp[i]] - Ax[i]) + 
+			sin(At[tm[i]] + Ax[i] - At[xp[tm[i]]]  - Ax[tm[i]]) 
+			);
 }
 
 double DS_Gy(int i)
 {
+	return beta*(
+			-sin(Ax[i]+Ay[xp[i]] - Ax[yp[i]] - Ay[i]) +
+			sin(Ax[xm[i]]+ Ay[i] - Ax[yp[xm[i]]] - Ay[xm[i]]) 
+			) + beta0*(-sin(At[i] + Ay[tp[i]] - At[yp[i]] - Ay[i]) + 
+			sin(At[tm[i]] + Ay[i] - At[yp[tm[i]]]  - Ay[tm[i]]) 
+			);
+
 }
 
 

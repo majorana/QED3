@@ -39,7 +39,10 @@ int main(int argc, char **argv)
   	hotstart();
   	/* Print out the run parameters */
   	echo_sim_params();
-  
+ 	
+	printf("\n Test run:\n");
+	update();
+	return 0;
    
   	/* thermalization */
   	hmc_iter = 0; //Counts the total number of calls to the update() routine
@@ -48,9 +51,9 @@ int main(int argc, char **argv)
   	{
    		update();
 		//printf("\t Step %04i,\t mp = %2.4lf,\t pl = %2.4lf,\t cc = %2.4lf\n", i, mean_plaquette(), polyakov_loop());
-  };
- 
-  	/* measure the iterations only during real simulation, not thermalization */
+  	};
+  	
+	/* measure the iterations only during real simulation, not thermalization */
   	R              = 0; //Counts the total number of accepted configurations
   	g_cgiterations = 0; //Counts the total number of CG iterations
   	hmc_iter       = 0; //Counts the total number of calls to the update() routine

@@ -18,20 +18,6 @@ int g_cgiterations1;
 int g_cgiterations2;
 double ham, ham_old;
 
-double hamiltonian()
-{
-	int i;
-	ham = 0;
- 	s_g = 0;
- 	for (i=0; i<GRIDPOINTS; i++)
- 	{
-  		s_g += S_G(i);
-  		ham += 0.5*(gpx[i]*gpx[i] + gpy[i]*gpy[i] + gpt[i]*gpt[i]);
- 	};
- 	ham += s_g;
-	return(ham);
-}
-
 int update() //Basic HMC update step
 {
  	int i, acc;
@@ -45,17 +31,17 @@ int update() //Basic HMC update step
 		gpt[i] = gauss();
   		ham_old += 0.5*(gpx[i]*gpx[i] + gpy[i]*gpy[i] + gpt[i]*gpt[i]);
  	};
- 	ham_old += s_g_old; //s_g_old contains the action of the gauge fields
+ 	ham_old += s_g_old; //s_g_old contains the action of the gauge fields, initiated in hotstart/coldstart
+	printf("%f\n", ham_old);
  
 	for(i=0; i<GRIDPOINTS; i++)
  	{
   		g_R[i] = (gauss() + I*gauss())/sqrt(2); //Pseudofermion fields times M^{-1} 
  	};
-	squnrm = square_norm(g_R);
-  	fermion(g_fermion, g_R); //g_fermion the pseudofermion field, i.e. phi = M R
-  	ham_old += squnrm;
+	//squnrm = square_norm(g_R);
+  	//fermion(g_fermion, g_R); //g_fermion the pseudofermion field, i.e. phi = M R
+  	//ham_old += squnrm;
 
- 	// Do the molecular dynamic chain
  	integrator(g_steps, g_stepsize);
  
  	// Calculate the new action and hamiltonian
@@ -67,10 +53,11 @@ int update() //Basic HMC update step
   		ham += 0.5*(gpx[i]*gpx[i] + gpy[i]*gpy[i] + gpt[i]*gpt[i]);
  	};
  	ham += s_g;
+	printf("%f\n", ham);
 
 	// Calculate phi (M M^\dag)^{-1} phi = R^\dag R, R= M^{-1}phi
-	g_cgiterations1 += cg(g_R, g_fermion, ITER_MAX, DELTACG, &fermion_fp);
-	ham += scalar_prod_r(g_R, g_R);
+	//g_cgiterations1 += cg(g_R, g_fermion, ITER_MAX, DELTACG, &fermion_fp);
+	//ham += scalar_prod_r(g_R, g_R);
 
  	exphdiff = exp(ham_old-ham);
  	acc = accept(exphdiff);
@@ -104,19 +91,19 @@ int accept(const double exphdiff)
     	if(r[0]<exphdiff) {
       		acc = 1;
       		R += 1;
-    }
-    else {
-      // get the old values for phi, cause the configuration was not accepted
-    	for (i=0; i<GRIDPOINTS; i++)
-		{
-			Ax[i] = Ax_old[i];
-			Ay[i] = Ay_old[i];
-			At[i] = At_old[i];
-		};
-      	calculatelinkvars();
-      	s_g = s_g_old;
+    	}
+    	else {
+      	// reject the change, get the old values for A
+    		for (i=0; i<GRIDPOINTS; i++)
+			{
+				Ax[i] = Ax_old[i];
+				Ay[i] = Ay_old[i];
+				At[i] = At_old[i];
+			};
+      		calculatelinkvars();
+      		s_g = s_g_old;
+		}
 	}
-}
   return acc;
 }
 

@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include "lattice.h"
 
+#define MOD(a, b) (((a) % (b)) + (b)) % (b)
+
 /* index arrays for neighbours */
 int * xp;
 int * xm;
@@ -27,12 +29,12 @@ int init_lattice(const int Nx, const int Ny, const int Nt) {
 	  	for(ix = 0; ix < Nx; ix++) {
 		  	for(iy = 0; iy < Ny; iy++) {
 			  	s = it*Nx*Ny + ix*Ny + iy;
-			  	xp[s] = it*Nx*Ny + ((ix+1)%Nx)*Ny + iy;
-				xm[s] = it*Nx*Ny + ((ix-1)%Nx)*Ny + iy;
-				yp[s] = it*Nx*Ny + ix*Ny + ((iy+1)%Ny);
-				ym[s] = it*Nx*Ny + ix*Ny + ((iy-1)%Ny);
-				tp[s] = ((it+1)%Nt)*Nx*Ny + ix*Ny + iy;
-				tm[s] = ((it-1)%Nt)*Nx*Ny + ix*Ny + iy;
+			  	xp[s] = it*Nx*Ny + MOD(ix+1, Nx)*Ny + iy;
+				xm[s] = it*Nx*Ny + MOD(ix-1, Nx)*Ny + iy;
+				yp[s] = it*Nx*Ny + ix*Ny + MOD(iy+1,Ny);
+				ym[s] = it*Nx*Ny + ix*Ny + MOD(iy-1,Ny);
+				tp[s] = MOD(it+1, Nt)*Nx*Ny + ix*Ny + iy;
+				tm[s] = MOD(it-1, Nt)*Nx*Ny + ix*Ny + iy;
 		  }
 	  }
   }

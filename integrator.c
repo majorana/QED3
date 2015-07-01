@@ -1,20 +1,29 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "hmc.h"
 #include "integrator.h"
 #include "fermion.h"
 #include "fields.h"
 
 /*  leap frog integrator */
-void integrator(const double dtau) {
-  int l;
-
+void leapfrog(const double dtau) {
   	/* first phase: \Delta\Tau / 2 step for p */
-  	update_momenta(0.5*dtau); 
+  	update_momenta_gauge(0.5*dtau); 
+
 
   	update_gauge(dtau);
 
   	/*  last phase: \Delta\Tau / 2 step for p */
-  	update_momenta(dtau*0.5);
+  	update_momenta_gauge(dtau*0.5);
+}
+
+void integrator(const int steps, const double stepsize) {
+	int i;
+	for(i = 0; i < steps; i++)
+	{
+		printf("leap-frog step: %d\n", i);
+		leapfrog(stepsize);
+	}
 }
 
 // Calculate fermion force. Assume g_eta is the inverse of MM^\dag
@@ -45,6 +54,18 @@ double fermion_forcey(const int i)
 	f = 2*scalar_prod_r(g_eta, g_temp2);
 	return(f);
 }
+
+void update_momenta_gauge(const double dtau) 
+{
+  	int i;
+  	for(i = 0; i < GRIDPOINTS; i++) {
+		gpt[i] = gpt[i] - dtau*DS_Gt(i);
+    	gpx[i] = gpx[i] - dtau*DS_Gx(i);
+    	gpy[i] = gpy[i] - dtau*DS_Gy(i);
+  	}
+  	return;
+}
+
 
 void update_momenta(const double dtau) 
 {

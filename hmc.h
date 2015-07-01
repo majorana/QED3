@@ -6,7 +6,7 @@
 /***********************************************************************************/
 
 /* Maximal number of iterations for CG method */
-#define ITER_MAX 5000
+#define ITER_MAX 100
 /* Tolerance for CG method */
 #define DELTACG 1.e-22
 /* Step size and the number of steps for the leapfrog */

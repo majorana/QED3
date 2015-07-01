@@ -18,12 +18,48 @@ int g_cgiterations1;
 int g_cgiterations2;
 double ham, ham_old;
 
+void test_fermion_force(int n) {
+	int i, j;
+	double squnrm;
+	complex double basis[GRIDPOINTS];
+	complex double out[GRIDPOINTS];
+	complex double temp[GRIDPOINTS];
+	set_zero(basis);
+	//for(i = 0; i<GRIDPOINTS; i++) 
+	//{
+	//	basis[i] = 1.0;
+	//	fermion_sqr(out, temp, basis);
+	//	printf("{");
+	//	for(j = 0; j < GRIDPOINTS; j++)
+	//	{
+	//		printf("%.1f,  ", creal(out[j]));
+	//	}
+	//	printf("},\n");
+	//	basis[i] = 0.0;
+	//}
+
+	for(i=0; i<GRIDPOINTS; i++)
+ 	{
+  		g_R[i] = (gauss() + I*gauss())/sqrt(2); //Pseudofermion fields times M^{-1} 
+ 	};
+	squnrm = square_norm(g_R);
+  	fermion(g_fermion, g_R); //g_fermion the pseudofermion field, i.e. phi = M R
+  	ham_old = squnrm;
+	
+	At[n] += 0.2;
+	g_cgiterations1 += cg(g_R, g_fermion, ITER_MAX, DELTACG, &fermion_sqr);
+
+
+	return;
+}
 
 int update() //Basic HMC update step
 {
  	int i, acc;
  	double squnrm, exphdiff;
-	
+
+	test_fermion_force(4);
+	return 0;
 
  	ham_old = 0.0;
  	for(i=0; i<GRIDPOINTS; i++)
@@ -39,9 +75,9 @@ int update() //Basic HMC update step
  	{
   		g_R[i] = (gauss() + I*gauss())/sqrt(2); //Pseudofermion fields times M^{-1} 
  	};
-	//squnrm = square_norm(g_R);
-  	//fermion(g_fermion, g_R); //g_fermion the pseudofermion field, i.e. phi = M R
-  	//ham_old += squnrm;
+	squnrm = square_norm(g_R);
+  	fermion(g_fermion, g_R); //g_fermion the pseudofermion field, i.e. phi = M R
+  	ham_old += squnrm;
 
  	integrator(g_steps, g_stepsize);
  

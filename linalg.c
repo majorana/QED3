@@ -31,7 +31,7 @@ double square_norm(complex double *S)
   	for (ix=0;ix<GRIDPOINTS;ix++)
   	{
     	s = (complex double *)S + ix;
-    	ds += creal(cconj(S[ix]))*S[ix];
+    	ds += creal(cconj(S[ix])*S[ix]);
   	}
 
   	return ds;
@@ -64,6 +64,7 @@ void assign_add_mul(complex double *P, complex double *Q, complex double c)
   }
 }
 
+// P = P + c Q, c is real
 void assign_add_mul_r(complex double *P, complex double *Q, double c)
 {
   	int ix;
@@ -72,7 +73,7 @@ void assign_add_mul_r(complex double *P, complex double *Q, double c)
   	fact=c;
    
   	for (ix=0;ix<GRIDPOINTS;ix++){
-    	P[ix] = P[ix] + fact*Q[ix];
+    	P[ix] = P[ix] + c*Q[ix];
   	}
 }
 
@@ -101,7 +102,7 @@ void assign_mul_add_r(complex double *R, complex double *S, double c)
     r=(complex double *) R + ix;
     s=(complex double *) S + ix;
     
-    R[ix] = fact*R[ix] + S[ix];
+    R[ix] = c*R[ix] + S[ix];
     //(*r).s2=fact*(*r).s2+(*s).s2;
   }
 }
@@ -180,11 +181,8 @@ double scalar_prod_r(complex double *S, complex double *R)
   ds=0.0;
   
   for (ix=0;ix<GRIDPOINTS;ix++){
-    s=(complex double *) S + ix;
-    r=(complex double *) R + ix;
-    
     //ds+=conj((*s).s1)*(*r).s1+conj((*s).s2)*(*r).s2;
-    ds+=creal(cconj(S[ix]))*R[ix];
+    ds += creal(cconj(S[ix])*R[ix]);
   }
 
   return(ds);
@@ -196,56 +194,59 @@ double scalar_prod_r(complex double *S, complex double *R)
 
 int cg(complex double *P, complex double *Q, int max_iter, double eps_sq, matrix_mult f)
 {
- double normsq, pro, err, alpha_cg, beta_cg;
- int iteration;
- complex double r[GRIDPOINTS], p[GRIDPOINTS];
- complex double x[GRIDPOINTS], q2p[GRIDPOINTS];
- complex double tmp1[GRIDPOINTS];
+ 	double normsq, pro, err, alpha_cg, beta_cg;
+ 	int iteration;
+ 	complex double r[GRIDPOINTS], p[GRIDPOINTS];
+ 	complex double x[GRIDPOINTS], q2p[GRIDPOINTS];
+ 	complex double tmp1[GRIDPOINTS];
  
- /* Initial guess for the solution - zero works well here */ 
- set_zero(x);
+
+ 	/* Initial guess for the solution - zero works well here */ 
+ 	set_zero(x);
   
- /* initialize residue r and search vector p */
- assign(r, Q); /* r = Q - f*x, x=0 */
- assign(p, r);
- normsq = square_norm(r);
+ 	/* initialize residue r and search vector p */
+ 	assign(r, Q); /* r = Q - f*x, x=0 */
+ 	assign(p, r);
+ 	normsq = square_norm(r);
+ 	printf("%f\n", normsq);
   
- /* main loop */
+ 	/* main loop */
 #ifdef MONITOR_CG_PROGRESS
-  printf("\n\n Starting CG iterations...\n");
+  	printf("\n\n Starting CG iterations...\n");
 #endif
- for(iteration=0; iteration<max_iter; iteration++)
- {
-  f(q2p, tmp1, p);
-  pro = scalar_prod_r(p, q2p);
-  /*  Compute alpha_cg(i+1)   */
-  alpha_cg = normsq/pro;
-  /*  Compute x_(i+1) = x_i + alpha_cg(i+1) p_i    */
-  assign_add_mul_r(x, p,  alpha_cg);
-  /*  Compute r_(i+1) = r_i - alpha_cg(i+1) Q2p_i   */
-  assign_add_mul_r(r, q2p, -alpha_cg);
-  /* Check whether the precision is reached ... */
-  err=square_norm(r);
+ 	for(iteration=0; iteration<max_iter; iteration++)
+ 	{
+  		f(q2p, tmp1, p);
+	
+  		pro = scalar_prod_r(p, q2p);
+  		/*  Compute alpha_cg(i+1)   */
+  		alpha_cg = normsq/pro;
+  		/*  Compute x_(i+1) = x_i + alpha_cg(i+1) p_i    */
+  		assign_add_mul_r(x, p,  alpha_cg);
+  		/*  Compute r_(i+1) = r_i - alpha_cg(i+1) Q2p_i   */
+  		assign_add_mul_r(r, q2p, -alpha_cg);
+  		/* Check whether the precision is reached ... */
+  		err=square_norm(r);
 #ifdef MONITOR_CG_PROGRESS
-  printf("\t CG iteration %i, |r|^2 = %2.2E\n", iteration, err);
+  		printf("\t CG iteration %i, |r|^2 = %.2f\n", iteration, err);
 #endif
-  if(err <= eps_sq)
-  {
+  		if(err <= eps_sq)
+  		{
 #ifdef MONITOR_CG_PROGRESS
-   printf("Required precision reached, stopping CG iterations...\n\n");
+   			printf("Required precision reached, stopping CG iterations...\n\n");
 #endif
-   assign(P, x);
-   return(iteration);
-  };
+   			assign(P, x);
+   			return(iteration);
+  		};
      
-  /* Compute beta_cg(i+1) */
-  beta_cg = err/normsq;
-  /* Compute p_(i+1) = r_i+1 + beta_(i+1) p_i     */
-  assign_mul_add_r(p, r, beta_cg);
-  normsq = err;
- }
- fprintf(stderr, "WARNING: CG didn't converge after %d iterations!\n", max_iter);
- return (-1);
+  		/* Compute beta_cg(i+1) */
+  		beta_cg = err/normsq;
+  		/* Compute p_(i+1) = r_i+1 + beta_(i+1) p_i     */
+  		assign_mul_add_r(p, r, beta_cg);
+  		normsq = err;
+ 		}
+ 		fprintf(stderr, "WARNING: CG didn't converge after %d iterations!\n", max_iter);
+ 		return (-1);
 }
 
 

@@ -4,7 +4,7 @@
 #include "complex/complex.h"
 
 //If this is #defined, CG will print the norm of each residue
-#undef MONITOR_CG_PROGRESS
+#define MONITOR_CG_PROGRESS
 
 /***********************************************************/
 /**** Implementation of linear algebra on complex double fields ****/

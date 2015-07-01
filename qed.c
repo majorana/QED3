@@ -8,7 +8,7 @@
 #include "fields.h"
 
 /* global variables */
-double g_mu = 1.0;
+double g_mu = 0.0;
 double g_t = 1.0;
 
 int g_thermalize   = 100;   //Number of MC updates for thermalization
@@ -36,10 +36,13 @@ int main(int argc, char **argv)
   	/* Initialize the lattice geometry */
   	init_lattice(Lx, Ly, Lt);
   	/* Initialize the fields */
-  	hotstart();
+  	coldstart();
   	/* Print out the run parameters */
   	echo_sim_params();
- 	
+ 
+	update();
+	return 0;
+
   	/* thermalization */
   	hmc_iter = 0; //Counts the total number of calls to the update() routine
   	printf("\n Thermalization: \n\n");

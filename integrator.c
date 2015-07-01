@@ -26,6 +26,7 @@ void integrator(const int steps, const double stepsize) {
 }
 
 // Calculate fermion force. Assume g_eta is the inverse of MM^\dag
+// eta^\dag*dM/dA*(M^\dag)*eta
 double fermion_forcet(const int i)
 {
 	double f;
@@ -35,7 +36,6 @@ double fermion_forcet(const int i)
 	return(f);
 }
 
-// eta^\dag*dM/dA*(M^\dag)*eta
 double fermion_forcex(const int i)
 {
 	double f;

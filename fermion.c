@@ -14,7 +14,7 @@ void fermion(complex double *out, complex double *in)
 {
 	int i;
   	for(i=0; i<GRIDPOINTS; i++) {
-		out[i] = exp(-g_mu)*Ut[i]*in[tp[i]] - in[i] + Ux[i]*in[xp[i]]
+		out[i] = exp(-g_mu)*Ut[i]*in[tp[i]] - in[i]
 			- g_t*(Ux[i]*in[xp[i]] + cconj(Ux[xm[i]])*in[xm[i]] + Uy[i]*in[yp[i]] + cconj(Uy[ym[i]])*in[ym[i]]);
 	}
 	return;
@@ -38,7 +38,7 @@ void fermion_herm(complex double *out, complex double *in)
 
 void fermion_sqr(complex double *out, complex double *temp, complex double *in)
 {
-	fermion(temp, in);
+	fermion_herm(temp, in);
 	fermion(out, temp);
 	return;
 }

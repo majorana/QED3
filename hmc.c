@@ -27,7 +27,7 @@ void test_gauge_force(int n) {
   		s_g_old += S_G(i);
  	};
 	
-	Ax[n] += 0.01;
+	Ax[n] += 0.001;
 	s_g = 0.0;
 	for (i=0; i<GRIDPOINTS; i++)
  	{

@@ -18,7 +18,7 @@ int g_intermediate =  2;    //Number of MC updates between the measurements
 /* extern in fields.h   */
 
 double beta0  = 1.0;
-double beta   = 1.0;        //Coupling constant for the gauge field
+double beta   = 1.0;        //Coupling constant for the gauge field, allow anisotropy between space and time. This is a non-relativistic system.
 
 /* extern in hmc.h      */
 int    g_steps    = 100;      //Number of steps in the molecular dynamics chain

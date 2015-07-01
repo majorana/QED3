@@ -23,7 +23,9 @@ double s_g, s_g_old;
 
 double S_G(int i)
 {
-	return (-beta0*(cos(At[i] + Ax[tp[i]] - At[xp[i]] - Ax[i]) + cos(At[i] + Ay[tp[i]] - At[yp[i]] - Ay[i])) - beta*cos(Ax[i] + Ay[xp[i]] - Ax[yp[i]] - Ay[i]) );
+	return (-beta0*(cos(At[i] + Ax[tp[i]] - At[xp[i]] - Ax[i]) 
+			+ cos(At[i] + Ay[tp[i]] - At[yp[i]] - Ay[i])) 
+			- beta*cos(Ax[i] + Ay[xp[i]] - Ax[yp[i]] - Ay[i]) );
 }
 
 double DS_Gt(int i)

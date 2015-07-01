@@ -18,26 +18,6 @@ int g_cgiterations1;
 int g_cgiterations2;
 double ham, ham_old;
 
-void test_gauge_force(int i)
-{
-	int j;
-	double sg0, sg1;
-	
-	sg0 = 0.0;
-	for (j=0; j<GRIDPOINTS; j++)
- 	{
-  		sg0 += S_G(j);
- 	};
-
-	Ax[i] = Ax[i] + 0.000001;
-
-	sg1 = 0.0;
- 	for (j=0; j<GRIDPOINTS; j++)
- 	{
-  		sg1 += S_G(j);
- 	};
-	printf("%f, %f\n",  (sg1-sg0)/0.000001, DS_Gx(i));
-}
 
 int update() //Basic HMC update step
 {

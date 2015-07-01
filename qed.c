@@ -40,10 +40,6 @@ int main(int argc, char **argv)
   	/* Print out the run parameters */
   	echo_sim_params();
  	
-	printf("\n Test run:\n");
-	update();
-	return 0;
-   
   	/* thermalization */
   	hmc_iter = 0; //Counts the total number of calls to the update() routine
   	printf("\n Thermalization: \n\n");

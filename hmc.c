@@ -18,11 +18,33 @@ int g_cgiterations1;
 int g_cgiterations2;
 double ham, ham_old;
 
+void test_gauge_force(int i)
+{
+	int j;
+	double sg0, sg1;
+	
+	sg0 = 0.0;
+	for (j=0; j<GRIDPOINTS; j++)
+ 	{
+  		sg0 += S_G(j);
+ 	};
+
+	Ax[i] = Ax[i] + 0.000001;
+
+	sg1 = 0.0;
+ 	for (j=0; j<GRIDPOINTS; j++)
+ 	{
+  		sg1 += S_G(j);
+ 	};
+	printf("%f, %f\n",  (sg1-sg0)/0.000001, DS_Gx(i));
+}
+
 int update() //Basic HMC update step
 {
  	int i, acc;
  	double squnrm, exphdiff;
- 
+	
+
  	ham_old = 0.0;
  	for(i=0; i<GRIDPOINTS; i++)
  	{
@@ -32,7 +54,6 @@ int update() //Basic HMC update step
   		ham_old += 0.5*(gpx[i]*gpx[i] + gpy[i]*gpy[i] + gpt[i]*gpt[i]);
  	};
  	ham_old += s_g_old; //s_g_old contains the action of the gauge fields, initiated in hotstart/coldstart
-	printf("%f\n", ham_old);
  
 	for(i=0; i<GRIDPOINTS; i++)
  	{
@@ -53,7 +74,8 @@ int update() //Basic HMC update step
   		ham += 0.5*(gpx[i]*gpx[i] + gpy[i]*gpy[i] + gpt[i]*gpt[i]);
  	};
  	ham += s_g;
-	printf("%f\n", ham);
+	
+	printf("%f\n", ham - ham_old);
 
 	// Calculate phi (M M^\dag)^{-1} phi = R^\dag R, R= M^{-1}phi
 	//g_cgiterations1 += cg(g_R, g_fermion, ITER_MAX, DELTACG, &fermion_fp);

@@ -21,8 +21,8 @@ double beta0  = 1.0;
 double beta   = 1.0;        //Coupling constant for the gauge field
 
 /* extern in hmc.h      */
-int    g_steps    = 10;      //Number of steps in the molecular dynamics chain
-double g_stepsize = 0.10;    //Size of each step
+int    g_steps    = 100;      //Number of steps in the molecular dynamics chain
+double g_stepsize = 0.01;    //Size of each step
 
 void echo_sim_params();
 

@@ -40,7 +40,7 @@ double DS_Gx(int i)
 {
 	return beta*(
 			sin(Ax[i]+Ay[xp[i]] - Ax[yp[i]] - Ay[i]) -
-			sin(Ax[xm[i]]+Ay[xp[ym[i]]] - Ax[i] - Ay[ym[i]]) 
+			sin(Ax[ym[i]]+Ay[xp[ym[i]]] - Ax[i] - Ay[ym[i]]) 
 			) + beta0*(-sin(At[i] + Ax[tp[i]] - At[xp[i]] - Ax[i]) + 
 			sin(At[tm[i]] + Ax[i] - At[xp[tm[i]]]  - Ax[tm[i]]) 
 			);

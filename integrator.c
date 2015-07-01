@@ -8,20 +8,19 @@
 /*  leap frog integrator */
 void leapfrog(const double dtau) {
   	/* first phase: \Delta\Tau / 2 step for p */
-  	update_momenta_gauge(0.5*dtau); 
+  	update_gauge(0.5*dtau); 
 
 
-  	update_gauge(dtau);
+  	update_momenta_gauge(dtau);
 
   	/*  last phase: \Delta\Tau / 2 step for p */
-  	update_momenta_gauge(dtau*0.5);
+  	update_gauge(dtau*0.5);
 }
 
 void integrator(const int steps, const double stepsize) {
 	int i;
 	for(i = 0; i < steps; i++)
 	{
-		printf("leap-frog step: %d\n", i);
 		leapfrog(stepsize);
 	}
 }

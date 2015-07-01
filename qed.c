@@ -36,7 +36,7 @@ int main(int argc, char **argv)
   	/* Initialize the lattice geometry */
   	init_lattice(Lx, Ly, Lt);
   	/* Initialize the fields */
-  	coldstart();
+  	hotstart();
   	/* Print out the run parameters */
   	echo_sim_params();
  

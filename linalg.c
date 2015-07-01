@@ -8,14 +8,9 @@
 void add(complex double *Q, complex double *R, complex double *S)
 {
   	int ix;
-  	complex double *q,*r,*s;
   
   	for (ix=0;ix<GRIDPOINTS;ix++)
   	{
-    	q = (complex double *) Q + ix;
-    	r = (complex double *) R + ix;
-    	s = (complex double *) S + ix;
-
     	Q[ix] = R[ix] + S[ix];
   	}
 }
@@ -24,13 +19,11 @@ double square_norm(complex double *S)
 {
   	int ix;
   	static double ds;
-  	complex double *s;
 
   	ds=0.0;
 
   	for (ix=0;ix<GRIDPOINTS;ix++)
   	{
-    	s = (complex double *)S + ix;
     	ds += creal(cconj(S[ix])*S[ix]);
   	}
 
@@ -40,12 +33,8 @@ double square_norm(complex double *S)
 void assign(complex double *R, complex double *S)
 {
   	int ix;
-  	complex double *r,*s;
   
   	for (ix=0;ix<GRIDPOINTS;ix++){
-    	r=(complex double *) R + ix;
-    	s=(complex double *) S + ix;
-    
     	R[ix] = S[ix];
   }
 }
@@ -53,12 +42,8 @@ void assign(complex double *R, complex double *S)
 void assign_add_mul(complex double *P, complex double *Q, complex double c)
 {
   	int ix;
-  	complex double *r,*s;
   
   	for (ix=0;ix<GRIDPOINTS;ix++){
-    	r=(complex double *) P + ix;
-    	s=(complex double *) Q + ix;
-    	
 		P[ix] = P[ix] + c*Q[ix];
   	  	//(*r).s1 = (*r).s1 + c*(*s).s1;
   }
@@ -79,13 +64,9 @@ void assign_add_mul_r(complex double *P, complex double *Q, double c)
 
 void assign_diff_mul(complex double *R, complex double *S, complex double c){
   int ix;
-  complex double *r, *s;
 
   for (ix=0;ix<GRIDPOINTS;ix++)
   {
-    s = (complex double *) S + ix;
-    r = (complex double *) R + ix;
-
     R[ix]=R[ix]-c*S[ix];
   }
 }
@@ -94,14 +75,10 @@ void assign_mul_add_r(complex double *R, complex double *S, double c)
 {
   int ix;
   static double fact;
-  complex double *r,*s;
   
   fact=c;
   
   for (ix=0;ix<GRIDPOINTS;ix++){
-    r=(complex double *) R + ix;
-    s=(complex double *) S + ix;
-    
     R[ix] = c*R[ix] + S[ix];
     //(*r).s2=fact*(*r).s2+(*s).s2;
   }
@@ -110,13 +87,8 @@ void assign_mul_add_r(complex double *R, complex double *S, double c)
 void diff(complex double *Q, complex double *R, complex double *S)
 {
   int ix;
-  complex double *q,*r,*s;
   
   for (ix=0;ix<GRIDPOINTS;ix++){
-    q=(complex double *) Q + ix;
-    r=(complex double *) R + ix;
-    s=(complex double *) S + ix;
-    
 	Q[ix] = R[ix]-S[ix];
     //(*q).s2=(*r).s2-(*s).s2;
   }
@@ -125,12 +97,8 @@ void diff(complex double *Q, complex double *R, complex double *S)
 void mul_r(complex double *R, double c, complex double *S)
 {
   int ix;
-  complex double *r,*s;
 
   for (ix=0;ix<GRIDPOINTS;ix++){
-    r=(complex double *) R + ix;
-    s=(complex double *) S + ix;
-    
     R[ix]=c*S[ix]; 
     //(*r).s2=c*(*s).s2;
   }
@@ -139,12 +107,8 @@ void mul_r(complex double *R, double c, complex double *S)
 void mul_c(complex double *R, complex double c, complex double *S)
 {
   int ix;
-  complex double *r,*s;
 
   for (ix=0;ix<GRIDPOINTS;ix++){
-    r=(complex double *) R + ix;
-    s=(complex double *) S + ix;
-    
     R[ix]=c*S[ix]; 
     //(*r).s2=c*(*s).s2;
   }
@@ -154,16 +118,12 @@ complex double scalar_prod(complex double *S, complex double *R)
 {
   int ix;
   static complex double ds;
-  complex double *s,*r;
   
   /* Real Part */
 
   ds=0.0 + I*0.0;
   
   for (ix=0;ix<GRIDPOINTS;ix++){
-    s=(complex double *) S + ix;
-    r=(complex double *) R + ix;
-    
     ds+=cconj(S[ix])*R[ix]; //+cconj((*s).s2)*(*r).s2;
   }
 
@@ -174,7 +134,6 @@ double scalar_prod_r(complex double *S, complex double *R)
 {
   int ix;
   static double ds;
-  complex double *s,*r;
   
   /* Real Part */
 
@@ -228,7 +187,7 @@ int cg(complex double *P, complex double *Q, int max_iter, double eps_sq, matrix
   		/* Check whether the precision is reached ... */
   		err=square_norm(r);
 #ifdef MONITOR_CG_PROGRESS
-  		printf("\t CG iteration %i, |r|^2 = %.2f\n", iteration, err);
+  		printf("\t CG iteration %i, alpha = %.4f, |r|^2 = %.2f\n", iteration, alpha_cg, err);
 #endif
   		if(err <= eps_sq)
   		{

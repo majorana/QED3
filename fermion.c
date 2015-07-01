@@ -12,10 +12,12 @@
 
 void fermion(complex double *out, complex double *in) 
 {
-	int i;
+	int i,j;
   	for(i=0; i<GRIDPOINTS; i++) {
-		out[i] = exp(-g_mu)*Ut[i]*in[tp[i]] - in[i]
-			- g_t*(Ux[i]*in[xp[i]] + cconj(Ux[xm[i]])*in[xm[i]] + Uy[i]*in[yp[i]] + cconj(Uy[ym[i]])*in[ym[i]]);
+		//printf("%d,%f,%f\n", i, creal(Uy[ym[i]]),cimag(Uy[ym[i]]));
+		out[i] = - g_t*(Ux[i]*in[xp[i]] + cconj(Ux[xm[i]])*in[xm[i]] + Uy[i]*in[yp[i]] + cconj(Uy[ym[i]])*in[ym[i]]);
+		//exp(-g_mu)*Ut[i]*in[tp[i]] - in[i]
+		//printf("%d,%f,%f\n", i, creal(out[i]),cimag(out[i]));
 	}
 	return;
 }
@@ -30,8 +32,8 @@ void fermion_herm(complex double *out, complex double *in)
 {
 	int i;
   	for(i=0; i<GRIDPOINTS; i++) {
-		out[i] = exp(-g_mu)*cconj(Ut[tm[i]])*in[tm[i]] - in[i]
-			- g_t*(cconj(Ux[xm[i]])*in[xm[i]] + cconj(Ux[ym[i]])*in[ym[i]] + Ux[i]*in[xp[i]] + Uy[i]*in[yp[i]]);
+		out[i] = //exp(-g_mu)*cconj(Ut[tm[i]])*in[tm[i]] - in[i]
+			- g_t*(cconj(Ux[xm[i]])*in[xm[i]] + cconj(Uy[ym[i]])*in[ym[i]] + Ux[i]*in[xp[i]] + Uy[i]*in[yp[i]]);
 	}
 	return;
 }

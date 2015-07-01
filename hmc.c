@@ -21,22 +21,43 @@ double ham, ham_old;
 void test_fermion_force(int n) {
 	int i, j;
 	double squnrm;
+	complex double x;
 	complex double basis[GRIDPOINTS];
 	complex double out[GRIDPOINTS];
 	complex double temp[GRIDPOINTS];
+	
+	printf("\n Fermion determinant:\n");
 	set_zero(basis);
-	//for(i = 0; i<GRIDPOINTS; i++) 
-	//{
-	//	basis[i] = 1.0;
-	//	fermion_sqr(out, temp, basis);
-	//	printf("{");
-	//	for(j = 0; j < GRIDPOINTS; j++)
-	//	{
-	//		printf("%.1f,  ", creal(out[j]));
-	//	}
-	//	printf("},\n");
-	//	basis[i] = 0.0;
-	//}
+	for(i = 0; i<GRIDPOINTS; i++) 
+	{
+		basis[i] = 1.0;
+		fermion_fp(out, temp, basis);
+		printf("{");
+		for(j = 0; j < GRIDPOINTS-1; j++)
+		{
+			x = out[j];
+			printf("%f,  ", creal(x));
+		}
+		printf("%f ", creal(out[GRIDPOINTS-1]));
+		printf("},");
+		basis[i] = 0.0;
+	}
+	printf("\n\n");
+	for(i = 0; i<GRIDPOINTS; i++) 
+	{
+		basis[i] = 1.0;
+		fermion_fp(out, temp, basis);
+		printf("{");
+		for(j = 0; j < GRIDPOINTS-1; j++)
+		{
+			x = out[j];
+			printf("%f,  ", cimag(x));
+		}
+		printf("%f ", cimag(out[GRIDPOINTS-1]));
+		printf("},");
+		basis[i] = 0.0;
+	}
+	printf("\n");
 
 	for(i=0; i<GRIDPOINTS; i++)
  	{
@@ -46,9 +67,16 @@ void test_fermion_force(int n) {
   	fermion(g_fermion, g_R); //g_fermion the pseudofermion field, i.e. phi = M R
   	ham_old = squnrm;
 	
-	At[n] += 0.2;
-	g_cgiterations1 += cg(g_R, g_fermion, ITER_MAX, DELTACG, &fermion_sqr);
+	//for(i=0; i<GRIDPOINTS; i++)
+ 	//{
+  	//	g_fermion[i] = i+1; 
+ 	//};
 
+	g_cgiterations1 += cg(g_eta, g_fermion, ITER_MAX, DELTACG, &fermion_sqr);
+
+	ham += scalar_prod_r(g_fermion, g_eta);
+
+	printf("%f, %f\n", ham_old, ham);
 
 	return;
 }

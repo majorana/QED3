@@ -22,4 +22,9 @@ extern void fermion_DGx(complex double *out, complex double *in, int j);
 
 extern void fermion_DGy(complex double *out, complex double *in, int j);
 
+double fermion_forcet(const int i);
+double fermion_forcex(const int i);
+double fermion_forcey(const int i);
+
+
 #endif

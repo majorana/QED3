@@ -8,7 +8,7 @@
 #include "fields.h"
 
 /* global variables */
-double g_mu = 2.0;
+double g_mu = 1.0;
 double g_t = 1.0;
 
 int g_thermalize   = 100;   //Number of MC updates for thermalization
@@ -22,7 +22,7 @@ double beta   = 1.0;        //Coupling constant for the gauge field, allow aniso
 
 /* extern in hmc.h      */
 int    g_steps    = 10;      //Number of steps in the molecular dynamics chain
-double g_stepsize = 0.01;    //Size of each step
+double g_stepsize = 0.001;    //Size of each step
 
 void echo_sim_params();
 

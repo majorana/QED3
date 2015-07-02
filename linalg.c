@@ -150,6 +150,27 @@ void print_vector(complex double *v)
 	printf("\n\n");
 }
 
+void print_vector_r(double *v)
+{
+	int i;
+	for(i = 0; i<GRIDPOINTS; i++) {
+		printf("%.3f,", v[i]);
+	}
+	printf("\n\n");
+}
+
+double max_r(double *v)
+{
+	int i;
+	double m;
+	m = abs(v[0]);
+	for(i=0; i<GRIDPOINTS;i++) {
+		if (abs(v[i]) > m) {
+			m = abs(v[i]);
+		}
+	}
+	return(m);
+}
 /************ Conjugate gradient ****************/
 /***    Solves the equation f*P = Q           ***/
 /************************************************/
@@ -205,9 +226,9 @@ int cg(complex double *P, complex double *Q, int max_iter, double eps_sq, matrix
   		/* Compute p_(i+1) = r_i+1 + beta_(i+1) p_i     */
   		assign_mul_add_r(p, r, beta_cg);
   		normsq = err;
- 		}
- 		fprintf(stderr, "WARNING: CG didn't converge after %d iterations!\n", max_iter);
- 		return (-1);
+ 	}
+	fprintf(stderr, "WARNING: CG didn't converge after %d iterations!\n", max_iter);
+	return (-1);
 }
 
 

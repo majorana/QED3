@@ -30,6 +30,8 @@ void mul_c(complex double *R, complex double c, complex double *S);           //
 double square_norm(complex double *P);                                // (P, P*)
 void add(complex double *Q, complex double *R, complex double *S);                    // Q = R + S
 void print_vector(complex double *v);
+void print_vector_r(double *v);
+double max_r(double *v);
 
 //Conjugate gradient method...
 int cg(complex double *P, complex double *Q, int max_iter, double eps_sq, matrix_mult f);

@@ -68,3 +68,33 @@ void fermion_DGt(complex double *out, complex double *in, int j)
 }
 
 
+// Calculate fermion force. Assume g_eta is the inverse of MM^\dag
+// eta^\dag*dM/dA*(M^\dag)*eta
+double fermion_forcet(const int i)
+{
+	double f;
+	fermion_herm(g_temp1, g_eta);
+	fermion_DGt(g_temp2, g_temp1, i);
+	f = 2*scalar_prod_r(g_eta, g_temp2);
+	return(f);
+}
+
+double fermion_forcex(const int i)
+{
+	double f;
+	fermion_herm(g_temp1, g_eta);
+	fermion_DGx(g_temp2, g_temp1, i);
+	f = 2*scalar_prod_r(g_eta, g_temp2);
+	return(f);
+}
+
+double fermion_forcey(const int i)
+{
+	double f;
+	fermion_herm(g_temp1, g_eta);
+	fermion_DGy(g_temp2, g_temp1, i);
+	f = 2*scalar_prod_r(g_eta, g_temp2);
+	return(f);
+}
+
+

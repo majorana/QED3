@@ -10,6 +10,7 @@
 #include "fermion.h"
 #include "integrator.h"
 #include "hmc.h"
+#include "test.h"
 
 int R;
 int hmc_iter;
@@ -18,97 +19,12 @@ int g_cgiterations1;
 int g_cgiterations2;
 double ham, ham_old;
 
-void test_gauge_force(int n) {
-	int i;
-	double dA;
-	s_g_old = 0.0;
- 	for (i=0; i<GRIDPOINTS; i++)
- 	{
-  		s_g_old += S_G(i);
- 	};
-	
-	Ax[n] += 0.001;
-	s_g = 0.0;
-	for (i=0; i<GRIDPOINTS; i++)
- 	{
-  		s_g += S_G(i);
- 	};
-	printf("%f\n", (s_g - s_g_old)/dA);
-	printf("%f\n", DS_Gx(n));
-
-}
-
-void test_fermion_force(int n) {
-	int i, j;
-	double squnrm;
-	complex double dA, f;
-	complex double basis[GRIDPOINTS];
-	complex double out[GRIDPOINTS];
-	complex double temp[GRIDPOINTS];
-	
-	/* printf("\n Fermion determinant:\n");
-	set_zero(basis);
-	for(i = 0; i<GRIDPOINTS; i++) 
-	{
-		basis[i] = 1.0;
-		fermion_fp(out, temp, basis);
-		printf("{");
-		for(j = 0; j < GRIDPOINTS-1; j++)
-		{
-			x = out[j];
-			printf("%f,  ", creal(x));
-		}
-		printf("%f ", creal(out[GRIDPOINTS-1]));
-		printf("},");
-		basis[i] = 0.0;
-	}
-	printf("\n\n");
-	for(i = 0; i<GRIDPOINTS; i++) 
-	{
-		basis[i] = 1.0;
-		fermion_fp(out, temp, basis);
-		printf("{");
-		for(j = 0; j < GRIDPOINTS-1; j++)
-		{
-			x = out[j];
-			printf("%f,  ", cimag(x));
-		}
-		printf("%f ", cimag(out[GRIDPOINTS-1]));
-		printf("},");
-		basis[i] = 0.0;
-	}
-	printf("\n");
-	*/
-
-	for(i=0; i<GRIDPOINTS; i++)
- 	{
-  		g_R[i] = (gauss() + I*gauss())/sqrt(2); //Pseudofermion fields times M^{-1} 
- 	};
-	squnrm = square_norm(g_R);
-  	fermion(g_fermion, g_R); //g_fermion the pseudofermion field, i.e. phi = M R
-  	ham_old = squnrm;
-
-	g_cgiterations1 += cg(g_eta, g_fermion, ITER_MAX, DELTACG, &fermion_sqr);
-	f = fermion_forcex(n);
-
-	dA = 0.0001;
-	Ax[n] += dA;
-	calculatelinkvars();
-	g_cgiterations1 += cg(g_eta, g_fermion, ITER_MAX, DELTACG, &fermion_sqr);
-
-	ham += scalar_prod_r(g_fermion, g_eta);
-
-	printf("Fermion force: %f\n", f);
-	printf("%f %f\n", f, (ham-ham_old)/dA);
-	return;
-}
-
 int update() //Basic HMC update step
 {
  	int i, acc;
  	double squnrm, exphdiff;
 	
-	test_gauge_force(10);
+	//test_fermion_force(10);
 
  	ham_old = 0.0;
  	for(i=0; i<GRIDPOINTS; i++)
@@ -116,10 +32,8 @@ int update() //Basic HMC update step
   		gpx[i] = gauss();  //Momenta conjugate to the gauge fields 
   		gpy[i] = gauss();
 		gpt[i] = gauss();
-  		ham_old += 0.5*(gpx[i]*gpx[i] + gpy[i]*gpy[i] + gpt[i]*gpt[i]);
+  		ham_old += 0.5*(gpx[i]*gpx[i] + gpy[i]*gpy[i] + gpt[i]*gpt[i]) + S_G(i);
  	};
- 	ham_old += s_g_old; //s_g_old contains the action of the gauge fields, initiated in hotstart/coldstart
- 
 	for(i=0; i<GRIDPOINTS; i++)
  	{
   		g_R[i] = (gauss() + I*gauss())/sqrt(2); //Pseudofermion fields times M^{-1} 
@@ -127,6 +41,12 @@ int update() //Basic HMC update step
 	squnrm = square_norm(g_R);
   	fermion(g_fermion, g_R); //g_fermion the pseudofermion field, i.e. phi = M R
   	ham_old += squnrm;
+	
+	printf("Initial Hamiltonian: %f\n", ham_old);
+	
+	//fprint_fermion_mat();
+
+	calculate_fermion_force();
 
  	integrator(g_steps, g_stepsize);
  
@@ -140,12 +60,10 @@ int update() //Basic HMC update step
  	};
  	ham += s_g;
 	
-	printf("%f, %f\n", ham, ham_old);
 	
 	// Calculate phi (M M^\dag)^{-1} phi = R^\dag R, R= M^{-1}phi
 	g_cgiterations1 += cg(g_eta, g_fermion, ITER_MAX, DELTACG, &fermion_sqr);
 	ham += scalar_prod_r(g_fermion, g_eta);
-
 
  	exphdiff = exp(ham_old-ham);
  	acc = accept(exphdiff);

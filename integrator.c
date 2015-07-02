@@ -4,6 +4,7 @@
 #include "integrator.h"
 #include "fermion.h"
 #include "fields.h"
+#include "test.h"
 
 /*  leap frog integrator */
 void leapfrog(const double dtau) {
@@ -11,47 +12,34 @@ void leapfrog(const double dtau) {
   	update_gauge(0.5*dtau); 
 
 
-  	update_momenta_gauge(dtau);
+  	update_momenta(dtau);
 
   	/*  last phase: \Delta\Tau / 2 step for p */
   	update_gauge(dtau*0.5);
+
 }
 
 void integrator(const int steps, const double stepsize) {
-	int i;
+	int i, j;
+	double ham1, sg1;
+
 	for(i = 0; i < steps; i++)
 	{
+		sg1 = 0.0;
+		ham1 = 0.0;
+ 		for (j=0; j<GRIDPOINTS; j++)
+ 		{
+  			sg1 += S_G(j);
+  			ham1 += 0.5*(gpx[j]*gpx[j] + gpy[j]*gpy[j] + gpt[j]*gpt[j]);
+ 		};
+ 		ham1 += sg1;
+	
+		g_cgiterations1 += cg(g_temp3, g_fermion, ITER_MAX, DELTACG, &fermion_sqr);
+		ham1 += scalar_prod_r(g_fermion, g_temp3);
+		printf("Hamiltonian: %f\n", ham1);
+
 		leapfrog(stepsize);
 	}
-}
-
-// Calculate fermion force. Assume g_eta is the inverse of MM^\dag
-// eta^\dag*dM/dA*(M^\dag)*eta
-double fermion_forcet(const int i)
-{
-	double f;
-	fermion_herm(g_temp1, g_eta);
-	fermion_DGt(g_temp2, g_temp1, i);
-	f = 2*scalar_prod_r(g_eta, g_temp2);
-	return(f);
-}
-
-double fermion_forcex(const int i)
-{
-	double f;
-	fermion_herm(g_temp1, g_eta);
-	fermion_DGx(g_temp2, g_temp1, i);
-	f = 2*scalar_prod_r(g_eta, g_temp2);
-	return(f);
-}
-
-double fermion_forcey(const int i)
-{
-	double f;
-	fermion_herm(g_temp1, g_eta);
-	fermion_DGy(g_temp2, g_temp1, i);
-	f = 2*scalar_prod_r(g_eta, g_temp2);
-	return(f);
 }
 
 void update_momenta_gauge(const double dtau) 
@@ -69,12 +57,37 @@ void update_momenta_gauge(const double dtau)
 void update_momenta(const double dtau) 
 {
   	int i;
+	double fft[GRIDPOINTS];
+	double ffx[GRIDPOINTS];
+	double ffy[GRIDPOINTS];
+	double gfx[GRIDPOINTS];
+
   	g_cgiterations1 += cg(g_eta, g_fermion, ITER_MAX, DELTACG, &fermion_sqr);
+	//print_vector(g_eta);
   	for(i = 0; i < GRIDPOINTS; i++) {
-		gpt[i] = gpt[i] - dtau*(DS_Gt(i) + fermion_forcet(i));
-    	gpx[i] = gpx[i] - dtau*(DS_Gx(i) + fermion_forcex(i));
-    	gpy[i] = gpy[i] - dtau*(DS_Gy(i) + fermion_forcey(i));
+		//printf("%d \n", i);
+		//printf("Brute-force %f\n", stupid_fermion_force_x(i));
+		//printf("Smart %f\n", fermion_forcex(i));
+		gpt[i] = gpt[i] - dtau*(DS_Gt(i) - fermion_forcet(i));
+    	gpx[i] = gpx[i] - dtau*(DS_Gx(i) - fermion_forcex(i));
+    	gpy[i] = gpy[i] - dtau*(DS_Gy(i) - fermion_forcey(i));
+#ifdef MONITOR_MD
+		ffx[i] = stupid_fermion_force_x(i);
+		gfx[i] = DS_Gx(i);
+		fft[i] = fermion_forcet(i);
+		ffy[i] = fermion_forcey(i);
+#endif
   	}
+#ifdef MONITOR_MD
+	//print_vector_r(ffx);
+	//print_vector_r(fft);
+	printf("Max x fermion force: %.3f\n", max_r(ffx));
+	printf("Max y fermion force: %.3f\n", max_r(ffy));
+	printf("Max t fermion force: %.3f\n", max_r(fft));
+	if (max_r(ffx) > 1000.0 || max_r(fft) > 1000.0) {
+		//print_fermion_mat();
+	}
+#endif
   	return;
 }
 

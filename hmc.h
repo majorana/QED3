@@ -1,6 +1,7 @@
 #ifndef _HMC_H
 #define _HMC_H
 
+#define MONITOR_MD
 /***********************************************************************************/
 /*** This unit implement the basic HMC update step and the necessary procedures ****/
 /***********************************************************************************/
@@ -22,5 +23,6 @@ extern int hmc_iter;
 
 int  update(); //Basic HMC update step
 int  accept(const double exphdiff); //Accept or reject the trajectory depending on exphdiff
+void print_fermion_mat(); 
 
 #endif

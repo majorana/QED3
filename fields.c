@@ -12,7 +12,7 @@
 complex double g_fermion[GRIDPOINTS]; //Pseudofermion field
 complex double g_eta[GRIDPOINTS];
 complex double g_R[GRIDPOINTS];       //g_X = (gamma_5 D)^{-2} g_fermion
-complex double g_temp1[GRIDPOINTS], g_temp2[GRIDPOINTS];
+complex double g_temp1[GRIDPOINTS], g_temp2[GRIDPOINTS], g_temp3[GRIDPOINTS];
 
 double At[GRIDPOINTS], Ax[GRIDPOINTS], Ay[GRIDPOINTS];         //Non-compact real-valued gauge fields
 double At_old[GRIDPOINTS], Ax_old[GRIDPOINTS], Ay_old[GRIDPOINTS]; //Old values of the gauge field

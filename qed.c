@@ -82,14 +82,17 @@ int main(int argc, char **argv)
 
 void echo_sim_params()
 {
- 	printf("Hybrid Monte-Carlo for U(1) gauge theory with spinor Fermi surface\n\n");
- 	printf("Run parameters (adjust in qed.c !!!):\n");
- 	printf("\t Beta:                            %2.4lf\n",  beta);
+ 	printf("\n Hybrid Monte-Carlo for U(1) gauge theory with spinor Fermi surface\n\n");
+ 	printf("Run parameters:\n");
+	printf("\t Chemical potential:              %2.4lf\n",   g_mu);
+ 	printf("\t Beta0:                            %2.4lf\n",  beta0);
+	printf("\t Beta:                            %2.4lf\n",  beta);
+	printf("\t Temperature:                     %2.4lf\n", dt*Lt);
  	printf("\t Lattice size:                    %i x %i x %i\n", Lx, Ly, Lt);
- 	printf("\t HMC step size:                   %2.4lf\n",  g_stepsize);
- 	printf("\t HMC no. of steps:                %i\n",      g_steps);
  	printf("\t Thermalization steps:            %i\n",      g_thermalize);
  	printf("\t Number of measurements:          %i\n",      g_measurements);
  	printf("\t MC updates between measurements: %i\n",      g_intermediate);
- 	printf("\n\n");
+	printf("\n\n");
+	fflush(stdout);
 }
+

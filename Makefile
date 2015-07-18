@@ -14,7 +14,10 @@ all: qed
 fields.o: fields.c fields.h lattice.h linalg.h complex/complex.h rand/ranlxd.h Makefile
 	$(CC) -c $< -o $@
 
-mc.o: mc.c mc.h lattice.h fields.h linalg.h complex/complex.h rand/ranlxd.h rand/gauss.h Makefile
+integrator.o: integrator.c integrator.h fields.h fermion.h test.h Makefile
+	$(CC) -c $< -o $@
+
+hmc.o: hmc.c hmc.h lattice.h fields.h linalg.h complex/complex.h rand/ranlxd.h rand/gauss.h Makefile
 	$(CC) -c $< -o $@
 
 lattice.o: lattice.c lattice.h
@@ -32,14 +35,14 @@ gauss.o: rand/gauss.c rand/gauss.h Makefile
 fermion.o: fermion.c fermion.h lattice.h linalg.h complex/complex.h rand/ranlxd.h Makefile
 	$(CC) -c $< -o $@
 
-measurement.o: measurement.c measurement.h lattice.h fermion.h fields.h complex/complex.h Makefile
+test.o: test.c test.h fields.h lattice.h hmc.h linalg.h complex/complex.h Makefile
 	$(CC) -c $< -o $@
 
-qed.o: qed.c fields.h lattice.h linalg.h mc.h complex/complex.h Makefile rand/ranlxd.h
+qed.o: qed.c fields.h lattice.h linalg.h hmc.h complex/complex.h Makefile rand/ranlxd.h
 	$(CC) -c $< -o $@
 
-qed: fields.o qed.o mc.o lattice.o linalg.o  ranlxd.o gauss.o fermion.o measurement.o Makefile
-	$(LINKER) qed.o fields.o mc.o lattice.o linalg.o ranlxd.o gauss.o fermion.o measurement.o -o qed -lm
+qed: fields.o qed.o integrator.o hmc.o lattice.o linalg.o  test.o ranlxd.o gauss.o fermion.o Makefile
+	$(LINKER) qed.o fields.o integrator.o hmc.o lattice.o linalg.o test.o ranlxd.o gauss.o fermion.o  -o qed -lm
 
 clean:
 	rm -f *.o qed 

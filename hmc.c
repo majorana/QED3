@@ -46,7 +46,7 @@ int update() //Basic HMC update step
 	
 	//fprint_fermion_mat();
 
-	calculate_fermion_force();
+	//calculate_fermion_force();
 
  	integrator(g_steps, g_stepsize);
  

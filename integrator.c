@@ -73,7 +73,6 @@ void update_momenta(const double dtau)
     	gpy[i] = gpy[i] - dtau*(DS_Gy(i) - fermion_forcey(i));
 #ifdef MONITOR_MD
 		ffx[i] = stupid_fermion_force_x(i);
-		gfx[i] = DS_Gx(i);
 		fft[i] = fermion_forcet(i);
 		ffy[i] = fermion_forcey(i);
 #endif
@@ -84,20 +83,17 @@ void update_momenta(const double dtau)
 	printf("Max x fermion force: %.3f\n", max_r(ffx));
 	printf("Max y fermion force: %.3f\n", max_r(ffy));
 	printf("Max t fermion force: %.3f\n", max_r(fft));
-	if (max_r(ffx) > 1000.0 || max_r(fft) > 1000.0) {
-		//print_fermion_mat();
-	}
 #endif
   	return;
 }
 
 void update_gauge(const double dtau) {
-  int i;
-  for(i = 0; i < GRIDPOINTS; i++) {
-    Ax[i] = Ax[i] + dtau*gpx[i];
-    Ay[i] = Ay[i] + dtau*gpy[i];
-	At[i] = At[i] + dtau*gpt[i];
-  }
-  calculatelinkvars();
-  return;
+	int i;
+	for(i = 0; i < GRIDPOINTS; i++) {
+    	Ax[i] = Ax[i] + dtau*gpx[i];
+    	Ay[i] = Ay[i] + dtau*gpy[i];
+		At[i] = At[i] + dtau*gpt[i];
+  	}
+  	calculatelinkvars();
+  	return;
 }

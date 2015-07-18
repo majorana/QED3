@@ -2,6 +2,7 @@
 #define _LINALG_H
 
 #include "complex/complex.h"
+#include "lattice.h"
 
 //If this is #defined, CG will print the norm of each residue
 #undef MONITOR_CG_PROGRESS
@@ -29,11 +30,20 @@ void mul_r(complex double *R, double c, complex double *S);                   //
 void mul_c(complex double *R, complex double c, complex double *S);           // R = c S, c is complex
 double square_norm(complex double *P);                                // (P, P*)
 void add(complex double *Q, complex double *R, complex double *S);                    // Q = R + S
+
 void print_vector(complex double *v);
 void print_vector_r(double *v);
 double max_r(double *v);
 
 //Conjugate gradient method...
 int cg(complex double *P, complex double *Q, int max_iter, double eps_sq, matrix_mult f);
+
+//LAPACK wrapper
+int matrix_inverse(complex double *mat);
+int matrix_inverse_r(double *mat);
+double matrix_det_r(double *mat);
+complex double matrix_det(complex double *mat);
+
+double matrix_diff(complex double (*A1)[GRIDPOINTS],  complex double (*A2)[GRIDPOINTS]);
 
 #endif

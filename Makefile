@@ -1,11 +1,20 @@
+UNAME_S := $(shell uname -s)
+
 CC = gcc -std=c99 -pedantic -Wall -O3
+
+ifeq ($(UNAME_S), Linux)
+    LINKER = gcc -I/opt/intel/mkl/include -L/opt/intel/mkl/lib/intel64 -lmkl_intel_lp64  -lmkl_core -lmkl_intel_thread -liomp5 -ldl -lpthread -lm
+endif
+ifeq ($(UNAME_S), Darwin)
+    LINKER = gfortran /usr/local/lib/liblapacke.a /usr/local/lib/liblapack.a /usr/local/lib/libblas.a
+endif
 
 all: qed
 
 fields.o: fields.c fields.h lattice.h linalg.h complex/complex.h rand/ranlxd.h Makefile
 	$(CC) -c $< -o $@
 
-hmc.o: hmc.c hmc.h lattice.h fields.h linalg.h test.h complex/complex.h rand/ranlxd.h rand/gauss.h Makefile
+mc.o: mc.c mc.h lattice.h fields.h linalg.h complex/complex.h rand/ranlxd.h rand/gauss.h Makefile
 	$(CC) -c $< -o $@
 
 lattice.o: lattice.c lattice.h
@@ -23,18 +32,15 @@ gauss.o: rand/gauss.c rand/gauss.h Makefile
 fermion.o: fermion.c fermion.h lattice.h linalg.h complex/complex.h rand/ranlxd.h Makefile
 	$(CC) -c $< -o $@
 
-integrator.o: integrator.c integrator.h hmc.h test.h Makefile
+measurement.o: measurement.c measurement.h lattice.h fermion.h fields.h complex/complex.h Makefile
 	$(CC) -c $< -o $@
 
-test.o: test.c test.h linalg.h fermion.h fields.h Makefile
+qed.o: qed.c fields.h lattice.h linalg.h mc.h complex/complex.h Makefile rand/ranlxd.h
 	$(CC) -c $< -o $@
 
-qed.o: qed.c fields.h lattice.h linalg.h hmc.h complex/complex.h Makefile rand/ranlxd.h
-	$(CC) -c $< -o $@
-
-qed: fields.o qed.o hmc.o test.o lattice.o linalg.o  ranlxd.o gauss.o fermion.o integrator.o Makefile
-	$(CC) qed.o fields.o test.o hmc.o lattice.o linalg.o ranlxd.o gauss.o fermion.o integrator.o -o qed -lm
+qed: fields.o qed.o mc.o lattice.o linalg.o  ranlxd.o gauss.o fermion.o measurement.o Makefile
+	$(LINKER) qed.o fields.o mc.o lattice.o linalg.o ranlxd.o gauss.o fermion.o measurement.o -o qed -lm
 
 clean:
-	rm -f *.o qed test1 test2
+	rm -f *.o qed 
 

@@ -23,14 +23,14 @@ double s_g, s_g_old;
 
 double S_G(int i)
 {
-	return (-beta0*(cos(At[i] + Ax[tp[i]] - At[xp[i]] - Ax[i]) 
+	return (-beta0/dt*(cos(At[i] + Ax[tp[i]] - At[xp[i]] - Ax[i]) 
 			+ cos(At[i] + Ay[tp[i]] - At[yp[i]] - Ay[i])) 
-			- beta*cos(Ax[i] + Ay[xp[i]] - Ax[yp[i]] - Ay[i]) );
+			- beta*dt*cos(Ax[i] + Ay[xp[i]] - Ax[yp[i]] - Ay[i]) );
 }
 
 double DS_Gt(int i)
 {
-	return beta0*(
+	return beta0/dt*(
 			sin(At[i]+Ax[tp[i]] - At[xp[i]] - Ax[i]) -
 			sin(At[xm[i]]+Ax[tp[xm[i]]] - At[i] - Ax[xm[i]]) +
 			sin(At[i] + Ay[tp[i]] - At[yp[i]] - Ay[i]) - 
@@ -40,20 +40,20 @@ double DS_Gt(int i)
 
 double DS_Gx(int i)
 {
-	return beta*(
+	return beta*dt*(
 			sin(Ax[i]+Ay[xp[i]] - Ax[yp[i]] - Ay[i]) -
 			sin(Ax[ym[i]]+Ay[xp[ym[i]]] - Ax[i] - Ay[ym[i]]) 
-			) + beta0*(-sin(At[i] + Ax[tp[i]] - At[xp[i]] - Ax[i]) + 
+			) + beta0/dt*(-sin(At[i] + Ax[tp[i]] - At[xp[i]] - Ax[i]) + 
 			sin(At[tm[i]] + Ax[i] - At[xp[tm[i]]]  - Ax[tm[i]]) 
 			);
 }
 
 double DS_Gy(int i)
 {
-	return beta*(
+	return beta*dt*(
 			-sin(Ax[i]+Ay[xp[i]] - Ax[yp[i]] - Ay[i]) +
 			sin(Ax[xm[i]]+ Ay[i] - Ax[yp[xm[i]]] - Ay[xm[i]]) 
-			) + beta0*(-sin(At[i] + Ay[tp[i]] - At[yp[i]] - Ay[i]) + 
+			) + beta0/dt*(-sin(At[i] + Ay[tp[i]] - At[yp[i]] - Ay[i]) + 
 			sin(At[tm[i]] + Ay[i] - At[yp[tm[i]]]  - Ay[tm[i]]) 
 			);
 

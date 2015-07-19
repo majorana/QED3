@@ -6,6 +6,7 @@
 #include "lattice.h"
 #include "hmc.h"
 #include "fields.h"
+#include "test.h"
 
 /* global variables */
 double g_mu = 1.0;
@@ -40,8 +41,8 @@ int main(int argc, char **argv)
   	hotstart();
   	/* Print out the run parameters */
   	echo_sim_params();
- 
-	update();
+
+	test_fermion_force(20);
 	return 0;
 
   	/* thermalization */

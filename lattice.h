@@ -5,9 +5,9 @@
 /***** This unit defines lattice geometry  *****/
 /***********************************************/    
 
-#define Lx (10)                                       
-#define Ly (10)                                      
-#define Lt (12)
+#define Lx (12)                                       
+#define Ly (12)                                      
+#define Lt (20)
 #define GRIDPOINTS (Lx*Ly*Lt)                           //Total number of lattice sites
 
 extern int xp[GRIDPOINTS];
@@ -22,6 +22,6 @@ int init_lattice();      //This procedure initializes the above arrays
 
 int idx(int it, int ix, int iy);
 
-void coordiate(int i, int *it, int *ix, int *iy);
+void coordinate(int i, int *it, int *ix, int *iy);
 
 #endif

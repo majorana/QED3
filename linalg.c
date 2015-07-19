@@ -194,7 +194,6 @@ int cg(complex double *P, complex double *Q, int max_iter, double eps_sq, matrix
  	assign(r, Q); /* r = Q - f*x, x=0 */
  	assign(p, r);
  	normsq = square_norm(r);
-  
  	/* main loop */
 #ifdef MONITOR_CG_PROGRESS
   	printf("\n\n Starting CG iterations...\n");
